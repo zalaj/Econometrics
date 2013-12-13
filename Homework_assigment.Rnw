@@ -15,37 +15,38 @@ Homework assigment}
 
 \newpage
 
-\title{Problem 1}
+%%%-----PROBLEM 1-------
+
+\title{\bf Problem 1}
 \\
+MA(1) process:$$R_t = \epsilon_t + 0.25 \epsilon_{t-1}$$
 
-$$R_t = \epsilon_t + 0.25 \epsilon_{t-1}$$
+$\epsilon_t$ is white noise therefore $\epsilon_t \sim N(0, \delta_\epsilon)$ \\
+$E[\epsilon_t] = 0$, $Var(\epsilon_t) = \delta_\epsilon^2$, $\delta_\epsilon = 0.01$ and $E[\epsilon_t, \epsilon_s] = 0$  $\forall s \neq t$
+\\[3mm]
 
-$\epsilon_t$ is white noise therfore $\epsilon_t \sim N(0, \delta_\epsilon)$ and 
-$E[\epsilon_t] = 0$, $Var(\epsilon_t) = \delta_\epsilon^2$  and $E[\epsilon_t, \epsilon_s] = 0$  $\forall s \neq t $ where $\delta_\epsilon = 0.01$
-\\[5mm]
-
-1.\\
-lag-1 autocorrelation:\\
+{\bf 1.}\\[1mm]
+{\it lag-1 autocorrelation:}\\[1mm]
 $$E[R_t] = E[\epsilon_t + 0.25 \epsilon_{t-1}] = 0$$
-$$Var(R_t) = Var(\epsilon_t + 0.25 \epsilon_{t-1}) = Var(\epsilon_t) + 0.25^2 Var(\epsilon_{t-1}) = 0.01^2 (1+0.25^2) = 0.00010625 $$
-
+\begin{eqnarray*}
+Var(R_t) &=& Var(\epsilon_t + 0.25 \epsilon_{t-1}) = Var(\epsilon_t) + 0.25^2 Var(\epsilon_{t-1}) \\
+&=& 0.01^2 (1+0.25^2) = 0.00010625 
+\end{eqnarray*}
 
 \begin{eqnarray*}
-Cov(R_t, R_{t-1})\\
-&=& E[(R_t - E(R_t))(R_{t-1} - E(R_{t-1}))] = E[R_t R_{t-1}]\\
+Cov(R_t, R_{t-1})&=& E[(R_t - E(R_t))(R_{t-1} - E(R_{t-1}))] = E[R_t R_{t-1}]\\
 &=&E[(\epsilon_t+0.25 \epsilon_{t-1})(\epsilon_{t-1}+0.25 \epsilon_{t-2})] \\
 &=& E[\epsilon_t \epsilon_{t-1}] + 0.25 E[\epsilon_t \epsilon_{t-2}] + 0.25 E[\epsilon_{t-1} \epsilon_{t-1}] + 0.25^2 E[\epsilon_t \epsilon_{t-2}]\\
 &=& 0.25 E[\epsilon_t ^2] = 0.25 * 0.01^2 = 0.000025
 \end{eqnarray*}
 
 \begin{eqnarray*}
-corr (R_t, R_{t-1}) = \frac{cov((R_t, R_{t-1}))}{\sqrt{Var(R_t)}\sqrt{Var(R_{t-1})}}=\frac{0.025}{1.0625} =0.2353 
+corr (R_t, R_{t-1}) = \frac{cov((R_t, R_{t-1}))}{\sqrt{Var(R_t)}\sqrt{Var(R_{t-1})}}=\frac{0.025}{0.10625} =0.2353 
 \end{eqnarray*}
 
-lag-2 autocorrelation: \\
+{\it lag-2 autocorrelation}: \\[1mm]
 \begin{eqnarray*}
-Cov(R_t, R_{t-2})\\
-&=& E[(R_t - E(R_t))(R_{t-2} - E(R_{t-2}))] = E[R_t R_{t-2}]\\
+Cov(R_t, R_{t-2})&=& E[(R_t - E(R_t))(R_{t-2} - E(R_{t-2}))] = E[R_t R_{t-2}]\\
 &=&E[(\epsilon_t+0.25 \epsilon_{t-1})(\epsilon_{t-2}+0.25 \epsilon_{t-3})] \\
 &=& E[\epsilon_t \epsilon_{t-2}] + 0.25 E[\epsilon_t \epsilon_{t-3}] + 0.25 E[\epsilon_{t-1} \epsilon_{t-2}] + 0.25^2 E[\epsilon_t \epsilon_{t-2}]\\
 &=& 0
@@ -54,47 +55,86 @@ Cov(R_t, R_{t-2})\\
 corr (R_t, R_{t-2}) = \frac{cov((R_t, R_{t-2}))}{\sqrt{Var(R_t)}\sqrt{Var(R_{t-2})}}=0 
 \end{eqnarray*}
 
-2.\\
+{\bf 2.}\\[3mm]
 
-1-month ahead forecast:
+{\it 1-month ahead forecast}:
+\begin{eqnarray*}
+\hat{R}_{100}(1)&=& E[\epsilon_{101}|\epsilon_{100},\epsilon_{99},...\epsilon_{0}]=E[\epsilon_{101}+0.25 \epsilon_{100}|\epsilon_{100} = 0.01] \\
+&=& 0.25*0.01 = 0.0025
+\end{eqnarray*}
 
-$$\hat{R}_{100}(1)= E[\epsilon_{101}|\epsilon_{100},\epsilon_{99},...\epsilon_{0}]=E[\epsilon_{101}+0.25 \epsilon_{100}|\epsilon_{100} = 0.01] = 0.25*0.01 = 0.0025$$
-
-Forecast error: $e_{100}(1) = \epsilon_{101}$
-
+{\it Forecast error}: $e_{100}(1) = \epsilon_{101}$
 $$Var(e_{100}(1))= \sigma_{\epsilon}^2=0.0001$$
 
-2-month ahead forecast:
+\\[2mm]
 
-$$\hat{R}_{100}(2)= E[\epsilon_{102}|\epsilon_{100},\epsilon_{99},...\epsilon_{0}]=E[\epsilon_{102}+0.25 \epsilon_{101}|\epsilon_{100} = 0.01] = 0$$
+{\it 2-month ahead forecast:}
+\begin{eqnarray*}
+\hat{R}_{100}(2)= E[\epsilon_{102}|\epsilon_{100},\epsilon_{99},...\epsilon_{0}]=E[\epsilon_{102}+0.25 \epsilon_{101}|\epsilon_{100} = 0.01] = 0
+\end{eqnarray*}
 
-Forecast error:$e_{100}(2) = \epsilon_{102} + 0.25 \epsilon{101}$
+{\it Forecast error}:$e_{100}(2) = \epsilon_{102} + 0.25 \epsilon_{101}$
 
 $$Var(e_{100}(2))= (1 + 0.25^2) \sigma_{\epsilon}^2=0.00010625$$
 
-3.\\ standard error of forecast
+{\bf 3.}\\ [1mm]
+{\it standard error of forecast:}
 
 $$se(1) = \sqrt{Var(e_{100}(1))} = 0.01$$
 $$se(2) = \sqrt{Var(e_{100}(2))} = 0.0103$$
+\\[3mm]
 
+%%%-----PROBLEM 2-------
 
-\title{Problem 2}
-\\
-$AR(1)  r_t = 0.01 + 0.5 r_{t-1} + \epsilon_t$, where $\epsilon_t \sim N(0, 0.03)$
+\title{\bf Problem 2}
+\\[3mm]
 
-1.\\
+AR(1) process: 
+$$r_t = 0.01 + 0.5 r_{t-1} + \epsilon_t$ where $\epsilon_t \sim N(0, 0.03)$$
+
+{\bf 1.}
 \begin{eqnarray*}
-E[r_t] = E[0.01 + 0.5 r_{t-1} + \epsilon_t]\\
-= 0.01 + 0.5 E[0.01 + 0.5 r_{t-2} + \epsilon_{t-1}] \\
-= 0.01 \frac{1}{1-0.5} = 0.05
+E[r_t] &=& E[0.01 + 0.5 r_{t-1} + \epsilon_t]\\
+&=& 0.01 + 0.5 E[0.01 + 0.5 r_{t-2} + \epsilon_{t-1}] \\
+&=& 0.01 \frac{1}{1-0.5} = 0.02
 \end{eqnarray*}
 
 $$Var(r_t) = \frac{\sigma_{\epsilon}^2}{1-0.5^2} = \frac{0.009}{0.75}= 0.0012$$
 
-2.\\
-$r_{100} = -0.01$ and $r_{99} = 0.02$
+{\bf 2.}\\
+$r_{100} = -0.01$ and $r_{99} = 0.02$\\[1mm]
 
-1-month forecast:
-$$\hat{r_{100}(1)} = E[r_{101}|r_{100}, r_{99}...r_{0}] = E[ 0.01 + 0.5 r_{t-1} + \epsilon_t |r_{100} = -0.01] = 0.01 + 0.5*(-0.01) = 0.005 $$
+{\it 1-month forecast:}
+\begin{eqnarray*}
+\hat{r}_{100}(1) &=& E[r_{101}|r_{100}, r_{99}...r_{0}] = E[ 0.01 + 0.5 r_{100} + \epsilon_{101} |r_{100} = -0.01]\\
+&=& 0.01 + 0.5*(-0.01) = 0.005
+\end{eqnarray*}
+
+{\it Forecast error}: $e_{100}(1) = \epsilon_{100} $
+$$Var(e_{100}(1)) = \sigma_{\epsilon}^2 = 0.03$$
+
+{\it 2-months forecast:}
+\begin{eqnarray*}
+\hat{r}_{100}(2) &=& E[r_{102}|r_{100}, r_{99}...r_{0}] = E[ 0.01 + 0.5 r_{101} + \epsilon_{101} |r_{100} = -0.01]\\
+&=& E [0.01 + 0.5 (0.01 + 0.5 r_{100} + \epsilon_{101})+\epsilon_{102}|r_{100} = -0.01]\\
+&=&0.01 +0.5(0.01 + 0.5*(-0.01)) =  0.0125
+\end{eqnarray*}
+
+{\it Forecast error} : $e_{100}(2) = 0.5 \epsilon_{101} + \epsilon_{102}$
+$$Var(e_{100}(2)) = (0.5^2 + 1)\sigma_{\epsilon}^2 = 0.0375 $$
+
+{\bf 3.}\\
+{\it standard error of forecast:}
+$$se(1) = \sqrt{Var(e_{100}(1))} = 0.1732$$
+$$se(1) = \sqrt{Var(e_{100}(2))} =  0.1936$$
+
+%%%-----PROBLEM 3-------
+
+\title{\bf Problem 3}
+\\[3mm]
+
+
+
 
 \end{document}
+
