@@ -82,7 +82,8 @@ $$Var(e_{100}(2))= (1 + 0.25^2) \sigma_{\epsilon}^2=0.00010625$$
 
 $$se(1) = \sqrt{Var(e_{100}(1))} = 0.01$$
 $$se(2) = \sqrt{Var(e_{100}(2))} = 0.0103$$
-\\[3mm]
+
+\clearpage
 
 %%%-----PROBLEM 2-------
 
@@ -128,19 +129,129 @@ $$Var(e_{100}(2)) = (0.5^2 + 1)\sigma_{\epsilon}^2 = 0.0375 $$
 $$se(1) = \sqrt{Var(e_{100}(1))} = 0.1732$$
 $$se(1) = \sqrt{Var(e_{100}(2))} =  0.1936$$
 
+\clearpage
 %%%-----PROBLEM 3-------
 
 \title{\bf Problem 3}
 \\[3mm]
+{\bf 1.}\\[1mm]
+The Akaike information criterion (AIC) is a measure of the relative quanlity of a statistival model and deals with the trade-off between goodness of fit of the model and the complexity of the model. AIC does not tell anything about the quality of the model in an absolute sence and does not proveide a test of a model in the sence of testing null hypothesis. 
 
-<<>>=
+AIC rewards goodnes of fit and includes penalty which is an increasing function of the number of estimated parameters which discourages overfitting. Thus AIC selects a model that fitts well but has a minimum number of parameters.
+
+In a set of candidate models for the data, the model with the minimum AIC value is the preferred model. Hence the value of AIC for a given data set has no meaning and it only becomes interesting when it is compaired to the AIC of a series of models. If only poor models are considered, AIC will select the best of the poor models.
+
+AIC for AR:
+$$AIC (p) = ln(\hat{\sigma}^2) + \frac{2p}{T}$$
+
+The first part measures the goodnes of fit. The higher the number of regressors, the lower ressiduals variance $\hat{sigma}^2$. The second part penalizes the number of regressors.\\[3mm]
+
+{\bf 2.}\\
+
+First we read the data and look at the time series of interest rates
+<<fig= TRUE>>=
 data <- read.table("C:/Users/Zali/Documents/Econometrics 2/yields.csv"
                      ,sep=",", header=TRUE)
+yields <- ts(data[,2:4])
+plot(yields, main = 'Time series treas3mo, treas2yr and treas10yr ')
+treas3mo <- ts(data$treas3mo)
+treas2yr <- ts(data$treas2yr)
+treas10yr <- ts(data$treas10yr)
+@
 
+Now we define a function which plots $AIC(p)$ for $p = 1,.., p_{max}$.  For each p we estimate AR(p) model with the function ar that is already available in R and from there we get $\hat{\sigma}^2$ that is used in the $AIC$. 
+
+<<fig = TRUE>>=
+AIC <- function (data, p_max){
+  aic <- c()
+  for (p in 1:p_max){
+    model <- ar(data, aic = FALSE, method = 'ols', order=p)
+    sigma <- model$var.pred 
+    aic_p <- log(sigma) + 2*p/(length(data)-p)
+    aic <- c(aic, aic_p)
+  }
+  plot(1:p_max, aic)
+  return(which(aic ==min(aic)))
+}
+p_max <- 24
+
+AIC(treas3mo, p_max)
+@
+
+The optimal lag length for treas3mo is $p^* = 17$
+
+<<fig = TRUE>>=
+p_2yr <- AIC(treas2yr, p_max)
+@
+
+The optimal lag length for treas2yr is $p^* = 13$
+
+<<fig = TRUE>>=
+p_10yr <- AIC(treas10yr, p_max)
+@
+
+The optimal lag length for treas10yr is $p^* = 7$
+\\[3mm]
+
+{\bf 3.}
+(a)\\[1mm]
+
+We make a function that plots residuals for each of the time series.
+<<>>=
+residuals <- function (data, p){
+  model <- ar(data, aic= FALSE, order = p, method ='ols')
+  plot(model$resid)
+  abline (h=0, col=2)   
+}
+
+p_3mo <- AIC(treas3mo, p_max)
+p_2yr <- AIC(treas2yr, p_max)
+p_2yr <- AIC(treas2yr, p_max)
 
 @
 
-The Akaike information criterion (AIC) is a measure of the relative quanlity of a statistival model and deals with the trade-off between goodness of fit of the model and the complexity of the model. AIC does not tell anything about the quality of the model in an absolute sence and does not proveide a test of a model in the sence of testing null hypothesis. 
+<<fig=true>>=
+residuals(treas3mo, p_3mo)
+@
+
+<<fig=true>>=
+residuals(treas2yr, p_2yr)
+@
+
+<<fig=true>>=
+residuals(treas10yr, p_10yr)
+@
+<<>>=
+acf(treas3mo, type="partial")
+acf(treas2yr, type="partial")
+acf(treas10yr, type="partial")
+@
+
+For all three time series we can see that non of the residuals is autocorrelated. From the pictures we can see that in all three cases residuals are moving around value 0.  
+
+(b)\\[1mm]
+
+<<>>=
+forecast <- function (data, p, n){
+  model <- ar(data, aic= FALSE, order = p, method ='ols')
+  forecast <- predict(model, n.ahead = n)
+  return(as.vector(forecast$pred))  
+}
+forecast(treas3mo, p_3mo,12)
+forecast(treas2yr, p_2yr,12)
+forecast(treas10yr, p_10yr,12)
+
+@
+
+
+
+\clearpage
+
+%%---------VIRI
+http://en.wikipedia.org/wiki/Akaike_information_criterion
+
+http://www.academia.edu/1426951/Akaike_Information_Criteria_Appication_to_Stationary_and_Nonstationary_Rainfalls_for_Wireless_Communication_Channel_in_Surabaya
+
 
 \end{document}
 
