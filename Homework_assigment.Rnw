@@ -133,8 +133,14 @@ $$se(1) = \sqrt{Var(e_{100}(2))} =  0.1936$$
 \title{\bf Problem 3}
 \\[3mm]
 
+<<>>=
+data <- read.table("C:/Users/Zali/Documents/Econometrics 2/yields.csv"
+                     ,sep=",", header=TRUE)
 
 
+@
+
+The Akaike information criterion (AIC) is a measure of the relative quanlity of a statistival model and deals with the trade-off between goodness of fit of the model and the complexity of the model. AIC does not tell anything about the quality of the model in an absolute sence and does not proveide a test of a model in the sence of testing null hypothesis. 
 
 \end{document}
 
